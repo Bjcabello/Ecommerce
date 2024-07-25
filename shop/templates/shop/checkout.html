@@ -1,0 +1,68 @@
+{% extends '../layout.html' %}
+
+{% load form_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2>Checkout</h2>
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.payment_method.label_tag }}
+                {{ form.payment_method|add_class:"form-control" }}
+            </div>
+            
+            <div id="bank-fields" style="display:none;">
+                <div class="form-group">
+                    {{ form.account_number.label_tag }}
+                    {{ form.account_number|add_class:"form-control" }}
+                </div>
+            </div>
+            
+            <div id="credit-card-fields" style="display:none;">
+                <div class="form-group">
+                    {{ form.credit_card_number.label_tag }}
+                    {{ form.credit_card_number|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    {{ form.credit_card_expiry.label_tag }}
+                    {{ form.credit_card_expiry|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    {{ form.credit_card_cvv.label_tag }}
+                    {{ form.credit_card_cvv|add_class:"form-control" }}
+                </div>
+            </div>
+            
+            <div id="paypal-fields" style="display:none;">
+                <div class="form-group">
+                    {{ form.paypal_email.label_tag }}
+                    {{ form.paypal_email|add_class:"form-control" }}
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Pagar</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var paymentMethodSelect = document.querySelector('select[name="payment_method"]');
+        var bankFields = document.getElementById('bank-fields');
+        var creditCardFields = document.getElementById('credit-card-fields');
+        var paypalFields = document.getElementById('paypal-fields');
+        
+        function togglePaymentFields() {
+            var paymentMethod = paymentMethodSelect.value;
+            bankFields.style.display = paymentMethod === 'bank' ? 'block' : 'none';
+            creditCardFields.style.display = paymentMethod === 'credit_card' ? 'block' : 'none';
+            paypalFields.style.display = paymentMethod === 'paypal' ? 'block' : 'none';
+        }
+        
+        paymentMethodSelect.addEventListener('change', togglePaymentFields);
+        togglePaymentFields(); // Ejecutar al cargar la página
+    });
+</script>
+{% endblock %}

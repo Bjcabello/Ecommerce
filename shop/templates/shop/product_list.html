@@ -1,0 +1,65 @@
+{% extends "../layout.html" %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-12 mt-5">
+            <form method="get" action="{% url 'product_list' %}" class="card card-sm">
+                <div class="card-body row no-gutters align-items-center">
+                    <div class="col">
+                        <input type="search" placeholder="Ingrese el nombre del producto" name="search" class="text-center form-control form-control-lg form-control-borderless">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success btn-lg">Buscar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        {% for producto in products %}
+        <div class="col-md-3 mt-2">
+            <div class="card">
+                <img class="card-img-top img-fluid" src="{{ producto.image }}" width="300px" height="300px" alt="">
+                <div class="card-body text-center">
+                    <p id="aa{{producto.id}}" class="card-title">{{ producto.name }}</p>
+                    <p class="card-text">Stock: {{ producto.stock }}</p>
+                    <p class="card-text">Precio: ${{ producto.price }}</p>
+                    <div class="d-flex text-center justify-content-around">
+                        <a href="{% url 'product_detail' product_id=producto.id %}" class="btn btn-warning">Detalles</a>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'add_to_cart' product_id=producto.id %}" class="btn btn-primary">Agregar al carrito</a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-secondary">Iniciar Sesión para comprar</a>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-3 offset-md-4">
+        <div class="pagination">
+      <span class="step-links">
+          {% if products.has_previous %}
+              <a href="?page=1">&laquo; primero</a>
+              <a href="?page={{ products.previous_page_number }}">anterior</a>
+          {% endif %}
+
+          <span class="current">
+              Página {{ products.number }} de {{ products.paginator.num_pages }}.
+          </span>
+
+          {% if products.has_next %}
+              <a href="?page={{ products.next_page_number }}">siguiente</a>
+              <a href="?page={{ products.paginator.num_pages }}">último &raquo;</a>
+          {% endif %}
+      </span>
+  </div>
+    </div>
+</div>
+{% endblock %}

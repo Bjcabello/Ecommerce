@@ -1,0 +1,30 @@
+{% extends "../layout.html" %}
+{% load multiply %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Carrito de Compras</h2>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.orderproduct_set.all %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>${{ item.product.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.product.price|multiply:item.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h4 class="mt-4">Total del Carrito: ${{ order.total }}</h4>
+    <a href="{% url 'checkout' %}" class="btn btn-primary mt-3">Proceder al Pago</a>
+</div>
+{% endblock %}

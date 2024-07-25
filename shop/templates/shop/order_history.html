@@ -1,0 +1,51 @@
+{% extends "../layout.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Historial de Pedidos</h1>
+    {% for detail in order_details %}
+        <div class="card mb-3">
+            <div class="card-header">
+                <h2>Orden #{{ detail.order.id }} - {{ detail.order.date }}</h2>
+                <p>Estado: {{ detail.order.status }}</p>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in detail.products %}
+                            <tr>
+                                <td>{{ item.product.name }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>${{ item.product.price }}</td>
+                                <td>${{ item.product_total }}</td>
+                                <td>
+                                    {% if detail.order.status == 'Pending' %}
+                                        <div class="d-flex">
+                                            <form method="post" action="{% url 'cancel_order' item.order_product_id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
+                                            </form>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <h3>Total del pedido: ${{ detail.order_total }}</h3>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

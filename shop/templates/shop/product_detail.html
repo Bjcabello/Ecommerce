@@ -1,0 +1,22 @@
+{% extends "../layout.html" %}
+
+
+{% block content %}
+<div class="row d-flex justify-content-center align-items-center">
+    <div class="col-md-6 mt-5">
+        <div>
+            <img class="img-fluid" src="{{ product.image }}" alt="{{ product.name }}">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="text-warning display-3">
+            {{ product.name }}
+        </div>
+        <div>
+            <p><strong>Descripcion </strong></p>{{ product.description|safe }}
+            <p><strong>Stock: </strong>{{ product.stock }}</p>
+            <p><strong>Precio: $</strong> {{ product.price }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
