@@ -31,3 +31,19 @@
     top: 2rem;
 }
 
+/*imagen product_list*/
+.image-container {
+    overflow: hidden; 
+    width: 100%;
+    position: relative;
+}
+
+.image-container img {
+    transition: transform 0.3s ease;
+}
+
+.image-container:hover img {
+    transform: scale(1.1); 
+}
+
+
